@@ -9,10 +9,7 @@ Contact: P.J.Basford@soton.ac.uk
 
 """
 import subprocess
-from datetime import datetime, timedelta
 import argparse
-import pytz
-import dateutil.parser
 
 CMD_LINE = "/usr/local/bin/resin"
 STATUS_CMD = "device"
@@ -28,10 +25,10 @@ def check_online(node_id):
     """
     status = _get_status(node_id)
     online = status['IS ONLINE:']
-    if online:
+    if online == "true":
         return (EXIT_OK, "OK: Node is online")
     else:
-        return (EXIT_CRTICAL, "CRITICAL: Node is offline")
+        return (EXIT_CRITICAL, "CRITICAL: Node is offline")
 
 def _get_status(node_id):
     (status, output) = _run_cmd("%s %s" % (STATUS_CMD, node_id))
